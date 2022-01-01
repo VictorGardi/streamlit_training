@@ -9,7 +9,6 @@ st.header('Hello 🌎!')
 if st.button('Balloons?'):
     st.balloons()
 
-@st.cache()
 def init_connection():
     key_dict = json.loads(st.secrets["textkey"])
     # Use a service account
