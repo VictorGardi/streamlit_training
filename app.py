@@ -41,10 +41,10 @@ def main():
     choice = st.sidebar.selectbox('What do you want to do today?', ['Add workout', 'statistics'])
     if choice == 'Add workout':
         type_of_workout = st.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
-        if type_of_workout != 'Add new':
+        if type_of_workout == 'Add new':
             type_of_workout = st.text_input('Add new type of workout')
         location = st.selectbox('Where did you workout?', get_workout_locations(collection) + ['Add new'])
-        if location != 'Add new':
+        if location == 'Add new':
             location = st.text_input('Add new location')
         
     else:
