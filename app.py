@@ -12,10 +12,8 @@ def init_connection():
         key_dict = json.loads(st.secrets["textkey"])
         cred = credentials.Certificate(key_dict)
         firebase_admin.initialize_app(cred)
-        db = firestore.client()
-    else:
-        db = firebase_admin.get_app()
-    return db
+
+    return firestore.client()
 
 def get_collection(db, collection='workouts'):
     return db.collection(collection)
