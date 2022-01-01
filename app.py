@@ -22,6 +22,10 @@ def get_collection(db, collection='workouts'):
 def add_doc_to_collection(collection, doc):
     pass
 
+def read_all_docs_in_collection(collection):
+    for doc in collection.stream():
+        st.write(doc.to_dict())
+
 def get_workout_choices(collection):
     workout_choices = list()
     for doc in collection.stream():
@@ -39,7 +43,7 @@ def get_workout_locations(collection):
 def main():
     db = init_connection()
     collection = get_collection(db)
-    choice = st.sidebar.selectbox('What do you want to do today?', ['Add workout', 'statistics'])
+    choice = st.sidebar.selectbox('What do you want to do today?', ['Add workout', 'History'])
     if choice == 'Add workout':
         type_of_workout = st.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
         if type_of_workout == 'Add new':
@@ -52,8 +56,15 @@ def main():
         timestamp = datetime.combine(date, time)
         st.write(timestamp)
         intensity = st.number_input('How intense was the workout?', min_value=1, max_value=10)
+        doc = {
+            "type_of_workout": type_of_workout,
+            "location": location,
+            "timestamp": timestamp,
+            "intensity": intensity
+        }
+
         
     else:
-        pass
+        read_all_docs_in_collection(collection)
 
 main()
