@@ -5,6 +5,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime
+import pandas as pd
 
 st.header('Workouts')
 
@@ -22,6 +23,14 @@ def get_collection(db, collection='workouts'):
 def print_all_docs_in_collection(collection):
     for doc in collection.stream():
         st.write(doc.to_dict())
+
+def firestore_to_pandas(collection):
+    workouts = list(collection.stream())
+
+    workouts_dict = list(map(lambda x: x.to_dict(), workouts))
+    df = pd.DataFrame(workouts_dict)
+    st.write(df)
+
 
 def get_workout_choices(collection):
     workout_choices = list()
@@ -48,13 +57,12 @@ def main():
         location = st.selectbox('Where did you workout?', get_workout_locations(collection) + ['Add new'])
         if location == 'Add new':
             location = st.text_input('Add new location')
-        duration = st.number_input('What was the duration of the workout?', min_value=1, max_value=1000)
+        duration = st.number_input('What was the duration of the workout?', min_value=1, max_value=1000, help='Duration of workout in minutes')
         date = st.date_input('At which date did you workout?')
         time = st.time_input('At what time did you workout')
         timestamp = datetime.combine(date, time)
-        st.write(timestamp)
         intensity = st.number_input('How intense was the workout?', min_value=1, max_value=10)
-        distance = st.number_input('What was the distance of the workout?', min_value=0)
+        distance = st.number_input('What was the distance of the workout?', min_value=0, help='Distance moved during workout in meters')
         doc = {
             "type_of_workout": type_of_workout,
             "location": location,
@@ -68,5 +76,6 @@ def main():
             collection.add(doc)
     else:
         print_all_docs_in_collection(collection)
+        firestore_to_pandas(collection)
 
 main()
