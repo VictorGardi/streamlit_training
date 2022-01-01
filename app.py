@@ -31,6 +31,9 @@ def firestore_to_pandas(collection):
     df = pd.DataFrame(workouts_dict)
     st.write(df)
 
+def get_docs_between_dates(collection, start_date, end_date):
+    return collection.where(u'timestamp', u'>=', start_date).where(u'timestamp', u'<', end_date)
+
 
 def get_workout_choices(collection):
     workout_choices = list()
@@ -49,6 +52,14 @@ def get_workout_locations(collection):
 def main():
     db = init_connection()
     collection = get_collection(db)
+    now = datetime.datetime.now()
+    one_week_ago = now - datetime.timedelta(days=7)
+    two_weeks_ago = now - datetime.timedelta(days=14)
+    number_of_workouts_last_week = len(get_docs_between_dates(collection, one_week_ago, now))
+    number_of_workouts_two_weeks_ago = len(get_docs_between_dates(collection, two_weeks_ago, one_week_ago))
+    delta = number_of_workouts_last_week - number_of_workouts_two_weeks_ago
+    st.metric('Number of workouts during the last seven days', value=number_of_workouts_last_week, delta=delta)
+
     choice = st.sidebar.selectbox('What do you want to do today?', ['Add workout', 'History'])
     if choice == 'Add workout':
         type_of_workout = st.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
@@ -73,7 +84,12 @@ def main():
         }
         add_doc = st.button('Add workout')
         if add_doc:
-            collection.add(doc)
+            try:
+                collection.add(doc)
+                st.success('Succesfully added workout!')
+            except Exception as e:
+                st.exception(e)
+            
     else:
         print_all_docs_in_collection(collection)
         firestore_to_pandas(collection)
