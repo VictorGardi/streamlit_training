@@ -32,7 +32,7 @@ def firestore_to_pandas(collection):
     st.write(df)
 
 def get_docs_between_dates(collection, start_date, end_date):
-    return collection.where(u'timestamp', u'>=', start_date).where(u'timestamp', u'<', end_date)
+    return collection.where(u'timestamp', u'>=', start_date).where(u'timestamp', u'<', end_date).stream()
 
 
 def get_workout_choices(collection):
