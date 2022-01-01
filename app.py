@@ -62,8 +62,9 @@ def main():
             "timestamp": timestamp,
             "intensity": intensity
         }
-
-        
+        add_doc = st.button('Add workout')
+        if add_doc:
+            collection.add(doc)
     else:
         read_all_docs_in_collection(collection)
 
