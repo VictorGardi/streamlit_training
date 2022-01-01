@@ -19,25 +19,22 @@ def init_connection():
 def get_collection(db, collection='workouts'):
     return db.collection(collection)
 
-def add_doc_to_collection(collection, doc):
-    pass
-
-def read_all_docs_in_collection(collection):
+def print_all_docs_in_collection(collection):
     for doc in collection.stream():
         st.write(doc.to_dict())
 
 def get_workout_choices(collection):
     workout_choices = list()
     for doc in collection.stream():
-        if doc.to_dict()['type_of_workout'].lower() not in workout_choices:
-            workout_choices.append(doc.to_dict()['type_of_workout'].lower())
+        if doc.to_dict()['type_of_workout'] not in workout_choices:
+            workout_choices.append(doc.to_dict()['type_of_workout'])
     return workout_choices
 
 def get_workout_locations(collection):
     locations = list()
     for doc in collection.stream():
-        if doc.to_dict()['location'].lower() not in locations:
-            locations.append(doc.to_dict()['location'].lower())
+        if doc.to_dict()['location'] not in locations:
+            locations.append(doc.to_dict()['location'])
     return locations
 
 def main():
@@ -51,21 +48,25 @@ def main():
         location = st.selectbox('Where did you workout?', get_workout_locations(collection) + ['Add new'])
         if location == 'Add new':
             location = st.text_input('Add new location')
+        duration = st.number_input('What was the duration of the workout?', min_value=1, max_value=1000)
         date = st.date_input('At which date did you workout?')
         time = st.time_input('At what time did you workout')
         timestamp = datetime.combine(date, time)
         st.write(timestamp)
         intensity = st.number_input('How intense was the workout?', min_value=1, max_value=10)
+        distance = st.number_input('What was the distance of the workout?', min_value=0)
         doc = {
             "type_of_workout": type_of_workout,
             "location": location,
             "timestamp": timestamp,
-            "intensity": intensity
+            "intensity": intensity,
+            "duration": duration,
+            "distance": distance
         }
         add_doc = st.button('Add workout')
         if add_doc:
             collection.add(doc)
     else:
-        read_all_docs_in_collection(collection)
+        print_all_docs_in_collection(collection)
 
 main()
