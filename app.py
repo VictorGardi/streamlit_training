@@ -4,7 +4,7 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from datetime import datetime
+import datetime
 import pandas as pd
 
 st.header('Workouts')
@@ -71,7 +71,7 @@ def main():
         duration = st.number_input('What was the duration of the workout?', min_value=1, max_value=1000, help='Duration of workout in minutes')
         date = st.date_input('At which date did you workout?')
         time = st.time_input('At what time did you workout')
-        timestamp = datetime.combine(date, time)
+        timestamp = datetime.datetime.combine(date, time)
         intensity = st.number_input('How intense was the workout?', min_value=1, max_value=10)
         distance = st.number_input('What was the distance of the workout?', min_value=0, help='Distance moved during workout in meters')
         doc = {
