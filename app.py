@@ -115,8 +115,10 @@ def main():
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
         st.write(df.date.dtype)
+        st.write(df)
         df.date = pd.to_datetime(df.date, format='%Y/%m/%d')
         st.write(df.date.dtype)
+        st.write(df)
         min_date = df.date.min()
         max_date = df.date.max()
         start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date), min_value=min_date, max_value=max_date)
