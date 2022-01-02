@@ -127,6 +127,9 @@ def main():
         elif granularity == 'Weekly':
             df['year-week'] = df['timestamp'].dt.strftime('%y-%W')
             x_axis = 'year-week'
+        elif granularity == 'Monthly':
+            df['year-month'] = df['timestamp'].dt.strftime('%y-%m')
+            x_axis = 'year-month'
         #group_by_date = df.groupby(['date']).size()
         #group_by_date.reset_index()
         #group_by_date = group_by_date.to_frame(name='Number of workouts')
@@ -144,7 +147,7 @@ def main():
             #x=x_axis,
             y='duration:Q',
             color='activity',
-            tooltip=['type_of_workout', 'distance', 'intensity', 'location']
+            tooltip=['date', 'type_of_workout', 'distance', 'intensity', 'location']
             )
 
         #st.altair_chart(c, use_container_width=True)
