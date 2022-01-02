@@ -116,7 +116,7 @@ def main():
         df['date'] = df['timestamp'].dt.date
         min_date = df.date.min()
         max_date = df.date.max()
-        start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date) min_value=min_date, max_value=max_date)
+        start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date), min_value=min_date, max_value=max_date)
         #print_all_docs_in_collection(collection)
         df = df[[(df.date >= start_date) & df.date < end_date]]
         
