@@ -76,7 +76,7 @@ def main():
         col1, col2 = st.columns(2)
         activity = col1.selectbox('What type of workout did you do?', get_activity_choices(collection) + ['Other', 'Add new'])
         if activity == 'Add new':
-            activity = col1.text_input('Add new type of workout')
+            activity = col1.text_input('Add new activity')
 
         type_of_workout = col1.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
         if type_of_workout == 'Add new':
