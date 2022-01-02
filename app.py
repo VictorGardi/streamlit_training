@@ -104,6 +104,6 @@ def main():
         group_by_date = df.groupby(['date', 'type_of_workout']).size()
         st.write(df)
         st.write(group_by_date)
-        st.line_chart(group_by_date])
+        st.line_chart(group_by_date)
 
 main()
