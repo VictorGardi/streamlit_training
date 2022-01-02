@@ -128,7 +128,7 @@ def main():
         df['Number of workouts'] = 1
 
         c = alt.Chart(df).mark_bar().encode(
-            x='date:T', scale=alt.Scale(nice={'interval': 'day', 'step': 1}),
+            x=alt.X('date', scale=alt.Scale(nice={'interval': 'day', 'step': 1})),
             y='duration:Q',
             color='activity',
             tooltip=['type_of_workout', 'distance', 'intensity', 'location']
