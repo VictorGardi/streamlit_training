@@ -1,5 +1,6 @@
 import json
 from re import DEBUG
+from altair.vegalite.v4.schema.channels import Tooltip
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials
@@ -123,15 +124,21 @@ def main():
         #st.write(temp)
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
-        temp = df[['date', 'activity']]
-        temp['Number of workouts'] = 1
-        c = alt.Chart(temp).mark_bar().encode(
+        df['Number of workouts'] = 1
+        c = alt.Chart(df).mark_bar().encode(
             x='date',
             y='Number of workouts',
-            color='activity'
+            color='activity',
+            tooltip=['duration', 'distance', 'intensity', 'location']
+            )
+        d = alt.Chart(df).mark_bar().encode(
+            x='date',
+            y='Number of workouts',
+            color='activity',
+            shape='type_of_workout',
+            tooltip=['duration', 'distance', 'intensity', 'location']
             )
 
-        st.write(temp)
-        st.altair_chart(c, use_container_width=True)
+        st.altair_chart(d, use_container_width=True)
 
 main()
