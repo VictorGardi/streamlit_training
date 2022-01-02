@@ -114,7 +114,9 @@ def main():
         st.header('History')
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
-        start_date, end_date = st.date_input('Which date interval are you interested in', min_value=df.date.min(), max_value=df.date.max())
+        min_date = df.date.min()
+        max_date = df.date.max()
+        start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date) min_value=min_date, max_value=max_date)
         #print_all_docs_in_collection(collection)
         df = df[[(df.date >= start_date) & df.date < end_date]]
         
