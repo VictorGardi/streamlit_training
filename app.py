@@ -33,6 +33,13 @@ def get_docs_between_dates(collection, start_date, end_date):
     return collection.where(u'timestamp', u'>=', start_date).where(u'timestamp', u'<', end_date).get()
 
 
+def get_activity_choices(collection):
+    activities = list()
+    for doc in collection.stream():
+        if doc.to_dict()['activity'] not in activities:
+            activities.append(doc.to_dict()['activity'])
+    return activities
+
 def get_workout_choices(collection):
     workout_choices = list()
     for doc in collection.stream():
@@ -65,6 +72,10 @@ def main():
     if choice == 'Add workout':
         st.header('Add workout')
         col1, col2 = st.columns(2)
+        activity = col1.selectbox('What type of workout did you do?', get_activity_choices(collection) + ['Other', 'Add new'])
+        if activity == 'Add new':
+            activity = col1.text_input('Add new type of workout')
+
         type_of_workout = col1.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
         if type_of_workout == 'Add new':
             type_of_workout = col1.text_input('Add new type of workout')
@@ -107,5 +118,8 @@ def main():
         st.write(df)
         st.write(group_by_date)
         st.bar_chart(group_by_date)
+        temp = df.groupby(['date', 'activity']).size()
+        st.write(temp)
+        st.write(temp.unstack(level=-1))
 
 main()
