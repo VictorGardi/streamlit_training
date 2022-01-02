@@ -118,10 +118,12 @@ def main():
         st.write(df)
         st.write(group_by_date)
         st.bar_chart(group_by_date)
-        temp = df.groupby(['date', 'activity'])
-        st.write(temp)
+        #temp = df.groupby(['date', 'activity'])
+        #st.write(temp)
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
+        temp = df[['date', 'activity']]
+
         st.write(temp)
         st.bar_chart(temp)
 
