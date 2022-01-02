@@ -130,17 +130,6 @@ def main():
         elif granularity == 'Monthly':
             df['year-month'] = df['timestamp'].dt.strftime('%y-%m')
             x_axis = 'year-month'
-        #group_by_date = df.groupby(['date']).size()
-        #group_by_date.reset_index()
-        #group_by_date = group_by_date.to_frame(name='Number of workouts')
-        #st.write(df)
-        #st.write(group_by_date)
-        #st.bar_chart(group_by_date)
-        #temp = df.groupby(['date', 'activity'])
-        #st.write(temp)
-        #temp = temp.unstack(level=-1)
-        #temp.fillna(0, inplace=True)
-        #df['Number of workouts'] = 1
 
         c = alt.Chart(df, title="Duration of {} workouts".format(granularity.lower())).mark_bar().encode(
             x=alt.X(x_axis, scale=alt.Scale(nice={'interval': 'day', 'step': 7})),
@@ -150,7 +139,13 @@ def main():
             tooltip=['date', 'type_of_workout', 'distance', 'intensity', 'location']
             )
 
+        d = alt.Chart(df).mark_bar().encode(
+            alt.X("intensity", bin=True),
+            y='count()',
+        )
+
         #st.altair_chart(c, use_container_width=True)
         st.altair_chart(c, use_container_width=True)
+        st.altair_chart(d, use_container_width=True)
 
 main()
