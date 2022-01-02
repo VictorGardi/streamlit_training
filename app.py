@@ -102,6 +102,7 @@ def main():
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
         group_by_date = df.groupby(['date', 'type_of_workout']).size()
+        group_by_date.reset_index(name='date')
         st.write(df)
         st.write(group_by_date)
         st.line_chart(group_by_date)
