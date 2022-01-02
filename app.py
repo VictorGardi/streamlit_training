@@ -125,7 +125,7 @@ def main():
         if granularity == 'Daily':
             x_axis = 'date'
         elif granularity == 'Weekly':
-            df['year-week'] = df['timestamp'].dt.strftime('%W-%U')
+            df['year-week'] = df['timestamp'].dt.strftime('%y-%W')
             x_axis = 'year-week'
         #group_by_date = df.groupby(['date']).size()
         #group_by_date.reset_index()
@@ -138,15 +138,14 @@ def main():
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
         #df['Number of workouts'] = 1
-        st.write(df)
 
         c = alt.Chart(df, title="Duration of {} workouts".format(granularity.lower())).mark_bar().encode(
             x=alt.X(x_axis, scale=alt.Scale(nice={'interval': 'day', 'step': 7})),
+            #x=x_axis,
             y='duration:Q',
             color='activity',
             tooltip=['type_of_workout', 'distance', 'intensity', 'location']
             )
-        alt.Scale(nice={'interval': 'day', 'step': 7})
 
         #st.altair_chart(c, use_container_width=True)
         st.altair_chart(c, use_container_width=True)
