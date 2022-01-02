@@ -47,24 +47,23 @@ def get_workout_locations(collection):
             locations.append(doc.to_dict()['location'])
     return locations
 
-def create_metric(collection, column):
+def create_metric(collection):
     now = datetime.datetime.now()
     one_week_ago = now - datetime.timedelta(days=7)
     two_weeks_ago = now - datetime.timedelta(days=14)
     number_of_workouts_last_week = len(get_docs_between_dates(collection, one_week_ago, now))
     number_of_workouts_two_weeks_ago = len(get_docs_between_dates(collection, two_weeks_ago, one_week_ago))
     delta = number_of_workouts_last_week - number_of_workouts_two_weeks_ago
-    column.metric('Number of workouts during the last seven days', value=number_of_workouts_last_week, delta=delta)
+    st.sidebar.metric('Number of workouts during the last seven days', value=number_of_workouts_last_week, delta=delta)
 
 def main():
     db = init_connection()
     collection = get_collection(db)
-    column1, column2 = st.columns(2)
-    column1.header('Workouts')
-    create_metric(collection, column2)
+    create_metric(collection)
 
     choice = st.sidebar.selectbox('What do you want to do today?', ['Add workout', 'History'])
     if choice == 'Add workout':
+        st.header('Add workout')
         col1, col2 = st.columns(2)
         type_of_workout = col1.selectbox('What type of workout did you do?', get_workout_choices(collection) + ['Other', 'Add new'])
         if type_of_workout == 'Add new':
@@ -89,7 +88,7 @@ def main():
             "duration": duration,
             "distance": distance
         }
-        add_doc = col2.button('Add workout')
+        add_doc = st.button('Add workout')
         if add_doc:
             try:
                 collection.add(doc)
@@ -98,6 +97,7 @@ def main():
                 st.exception(e)
             
     else:
+        st.header('History')
         #print_all_docs_in_collection(collection)
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
