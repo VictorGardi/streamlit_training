@@ -27,7 +27,7 @@ def firestore_to_pandas(collection):
 
     workouts_dict = list(map(lambda x: x.to_dict(), workouts))
     df = pd.DataFrame(workouts_dict)
-    st.write(df)
+    return df
 
 def get_docs_between_dates(collection, start_date, end_date):
     return collection.where(u'timestamp', u'>=', start_date).where(u'timestamp', u'<', end_date).get()
@@ -89,16 +89,18 @@ def main():
             "duration": duration,
             "distance": distance
         }
-        add_doc = col1.button('Add workout')
+        add_doc = col2.button('Add workout')
         if add_doc:
             try:
                 collection.add(doc)
-                col1.success('Succesfully added workout!')
+                st.success('Succesfully added workout!')
             except Exception as e:
-                col1.exception(e)
+                st.exception(e)
             
     else:
         print_all_docs_in_collection(collection)
-        firestore_to_pandas(collection)
+        df = firestore_to_pandas(collection)
+        df['date'] = df['timestamp'].dt.date
+        st.write(df)
 
 main()
