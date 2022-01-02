@@ -128,11 +128,12 @@ def main():
         df['Number of workouts'] = 1
 
         c = alt.Chart(df).mark_bar().encode(
-            x='date:T',
+            x='date:T', scale=alt.Scale(nice={'interval': 'day', 'step': 1}),
             y='duration:Q',
             color='activity',
             tooltip=['type_of_workout', 'distance', 'intensity', 'location']
             )
+        alt.Scale(nice={'interval': 'day', 'step': 7})
 
         #st.altair_chart(c, use_container_width=True)
         st.altair_chart(c, use_container_width=True)
