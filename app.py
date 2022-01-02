@@ -132,6 +132,6 @@ def main():
             )
 
         st.write(temp)
-        st.altair_chart(c)
+        st.altair_chart(c, use_container_width=True)
 
 main()
