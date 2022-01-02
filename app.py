@@ -127,7 +127,7 @@ def main():
         #temp.fillna(0, inplace=True)
         df['Number of workouts'] = 1
 
-        c = alt.Chart(df).mark_bar().encode(
+        c = alt.Chart(df, title="Duration of workouts per day").mark_bar().encode(
             x=alt.X('date', scale=alt.Scale(nice={'interval': 'day', 'step': 7})),
             y='duration:Q',
             color='activity',
