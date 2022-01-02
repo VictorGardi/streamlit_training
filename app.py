@@ -99,7 +99,8 @@ def main():
             "timestamp": timestamp,
             "intensity": intensity,
             "duration": duration,
-            "distance": distance
+            "distance": distance,
+            "activity": activity
         }
         add_doc = st.button('Add workout')
         if add_doc:
@@ -128,9 +129,9 @@ def main():
 
         c = alt.Chart(df).mark_bar().encode(
             x='date',
-            y='Number of workouts',
+            y='duration',
             color='activity',
-            tooltip=['type_of_workout', 'duration', 'distance', 'intensity', 'location']
+            tooltip=['type_of_workout', 'distance', 'intensity', 'location']
             )
 
         #st.altair_chart(c, use_container_width=True)
