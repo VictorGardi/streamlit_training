@@ -114,24 +114,24 @@ def main():
         #print_all_docs_in_collection(collection)
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
-        group_by_date = df.groupby(['date']).size()
-        group_by_date.reset_index()
-        group_by_date = group_by_date.to_frame(name='Number of workouts')
-        st.write(df)
-        st.write(group_by_date)
-        st.bar_chart(group_by_date)
+        #group_by_date = df.groupby(['date']).size()
+        #group_by_date.reset_index()
+        #group_by_date = group_by_date.to_frame(name='Number of workouts')
+        #st.write(df)
+        #st.write(group_by_date)
+        #st.bar_chart(group_by_date)
         #temp = df.groupby(['date', 'activity'])
         #st.write(temp)
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
         df['Number of workouts'] = 1
-        c = alt.Chart(df).mark_bar().encode(
+        """ c = alt.Chart(df).mark_bar().encode(
             x='date',
             y='Number of workouts',
             color='activity',
             tooltip=['duration', 'distance', 'intensity', 'location']
-            )
-        d = alt.Chart(df).mark_circle().encode(
+            ) """
+        c = alt.Chart(df).mark_circle().encode(
             x='date',
             y='Number of workouts',
             color='activity',
@@ -139,7 +139,7 @@ def main():
             tooltip=['duration', 'distance', 'intensity', 'location']
             )
 
+        #st.altair_chart(c, use_container_width=True)
         st.altair_chart(c, use_container_width=True)
-        st.altair_chart(d, use_container_width=True)
 
 main()
