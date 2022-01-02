@@ -106,6 +106,6 @@ def main():
         group_by_date = group_by_date.to_frame(name='Number of workouts')
         st.write(df)
         st.write(group_by_date)
-        st.line_chart(group_by_date)
+        st.bar_chart(group_by_date)
 
 main()
