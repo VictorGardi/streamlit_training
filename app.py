@@ -131,12 +131,11 @@ def main():
             color='activity',
             tooltip=['duration', 'distance', 'intensity', 'location']
             ) """
-        c = alt.Chart(df).mark_circle().encode(
+        c = alt.Chart(df).mark_bar().encode(
             x='date',
             y='Number of workouts',
             color='activity',
-            shape='type_of_workout',
-            tooltip=['duration', 'distance', 'intensity', 'location']
+            tooltip=['type_of_workout', 'duration', 'distance', 'intensity', 'location']
             )
 
         #st.altair_chart(c, use_container_width=True)
