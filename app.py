@@ -114,12 +114,8 @@ def main():
         st.header('History')
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
-        df.date = df.date.astype('datetime64')
-        st.write(df.date.dtype)
-        st.write(df)
-        #df.date = pd.to_datetime(df.date, format='%Y-%m-%d')
-        st.write(df.date.dtype)
-        st.write(df)
+        #df.date = df.date.astype('datetime64')
+
         min_date = df.date.min()
         max_date = df.date.max()
         start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date), min_value=min_date, max_value=max_date)
@@ -129,7 +125,7 @@ def main():
         if granularity == 'Daily':
             x_axis = 'date'
         elif granularity == 'Weekly':
-            df['year-week'] = df['date'].dt.strftime('%W-%U')
+            df['year-week'] = df['timestamp'].dt.strftime('%W-%U')
             x_axis = 'year-week'
         #group_by_date = df.groupby(['date']).size()
         #group_by_date.reset_index()
