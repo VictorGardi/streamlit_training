@@ -6,6 +6,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import datetime
 import pandas as pd
+import altair as alt
 
 def init_connection():
     if not firebase_admin._apps:
@@ -123,8 +124,14 @@ def main():
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
         temp = df[['date', 'activity']]
+        temp['Number of workouts'] = 1
+        c = alt.Chart(temp).mark_bar().encode(
+            x='date',
+            y='Number of workouts',
+            color='activity'
+            )
 
         st.write(temp)
-        st.bar_chart(temp)
+        st.altair_chart(c)
 
 main()
