@@ -88,8 +88,8 @@ def main():
         time = col2.time_input('At what time did you workout')
         timestamp = datetime.datetime.combine(date, time)
 
-        duration = col1.number_input('What was the duration of the workout?', min_value=1, max_value=1000, help='Duration of workout in minutes')
-        intensity = col2.number_input('How intense was the workout?', min_value=1, max_value=10)
+        duration = col1.number_input('What was the duration of the workout?', min_value=1, max_value=1000, value=60, help='Duration of workout in minutes')
+        intensity = col2.number_input('How intense was the workout?', min_value=1, max_value=10, value=5)
         distance = col1.number_input('What was the distance of the workout?', min_value=0, help='Distance moved during workout in meters')
         doc = {
             "type_of_workout": type_of_workout,
@@ -121,5 +121,6 @@ def main():
         temp = df.groupby(['date', 'activity']).size()
         st.write(temp)
         st.write(temp.unstack(level=-1))
+        st.bar_chart(temp.unstack(level=-1))
 
 main()
