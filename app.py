@@ -114,9 +114,10 @@ def main():
         st.header('History')
         df = firestore_to_pandas(collection)
         df['date'] = df['timestamp'].dt.date
+        df.date = df.date.astype('datetime64')
         st.write(df.date.dtype)
         st.write(df)
-        df.date = pd.to_datetime(df.date, format='%Y/%m/%d')
+        #df.date = pd.to_datetime(df.date, format='%Y-%m-%d')
         st.write(df.date.dtype)
         st.write(df)
         min_date = df.date.min()
