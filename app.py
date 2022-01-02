@@ -118,10 +118,10 @@ def main():
         max_date = df.date.max()
         start_date, end_date = st.date_input('Which date interval are you interested in', value=(min_date, max_date), min_value=min_date, max_value=max_date)
         #print_all_docs_in_collection(collection)
-        test = df[(df.date >= start_date) & (df.date < end_date)]
-        st.write(test)
-        df = df.query(start_date <= df.date <= end_date)
+        df = df[(df.date >= start_date) & (df.date <= end_date)]
         st.write(df)
+        #df = df.query(start_date <= df.date <= end_date)
+        #st.write(df)
         
         #group_by_date = df.groupby(['date']).size()
         #group_by_date.reset_index()
@@ -133,7 +133,7 @@ def main():
         #st.write(temp)
         #temp = temp.unstack(level=-1)
         #temp.fillna(0, inplace=True)
-        df['Number of workouts'] = 1
+        #df['Number of workouts'] = 1
 
         c = alt.Chart(df, title="Duration of workouts per day").mark_bar().encode(
             x=alt.X('date', scale=alt.Scale(nice={'interval': 'day', 'step': 7})),
