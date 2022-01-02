@@ -103,7 +103,7 @@ def main():
         df['date'] = df['timestamp'].dt.date
         group_by_date = df.groupby(['date']).size()
         group_by_date.reset_index()
-        group_by_date.rename(columns={ group_by_date.columns[0]: "Number of workouts" }, inplace=True)
+        group_by_date = group_by_date.to_frame(name='Number of workouts')
         st.write(df)
         st.write(group_by_date)
         st.line_chart(group_by_date)
